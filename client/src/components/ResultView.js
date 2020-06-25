@@ -14,10 +14,8 @@ export default class ResultView extends Component {
     this.setState({
       chartData: this.props.chartData,
     });
-    console.log("I updated");
   }
   shouldComponentUpdate(nextProps) {
-    console.log(nextProps.chartData !== this.state.chartData);
     return nextProps.chartData !== this.state.chartData;
   }
 
@@ -68,7 +66,7 @@ export default class ResultView extends Component {
           display: true,
           text: today.toLocaleDateString("en-US", options),
         },
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         responsive: true,
         legend: {
           labels: {
@@ -112,7 +110,6 @@ export default class ResultView extends Component {
         <React.Fragment>
           <HorizontalBar
             data={chartConfig.chartData}
-            height={500}
             options={chartConfig.chartOptions}
           />
         </React.Fragment>

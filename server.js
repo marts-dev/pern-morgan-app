@@ -49,8 +49,15 @@ app.post("/", async (req, rsp) => {
         .on("end", () => rsp.status(200).send("Data successfully saved to DB"));
     } catch (error) {
       console.error(error.message);
-      isFirstRun = true;
-      rsp.status(500).send("SQL query porblem");
+      if (error.code === "42P07") {
+        //Table already exists
+        rsp
+          .status(200)
+          .send("Ok, table already existing, client might have refreshed");
+      } else {
+        isFirstRun = true;
+        rsp.status(500).send("SQL query porblem");
+      }
     }
   } else {
     rsp.status(200).send("Ok");

@@ -7,8 +7,6 @@ export default class SearchBar extends Component {
   };
 
   onChange = (event) => {
-    console.log(event.target.name);
-    console.log(event.target.value);
     this.setState({ [event.target.name]: event.target.value });
   };
 
