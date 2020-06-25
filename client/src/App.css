@@ -1,38 +1,63 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+  font-family: "Ubuntu", sans-serif;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+input {
+  transition: all 0.3s ease-in-out;
+}
+
+input[type="submit"] {
+  background-color: #1c1c1c;
+  color: whitesmoke;
+  cursor: pointer;
+}
+
+input:focus,
+input:hover {
+  outline: none;
+  box-shadow: 0 0 10px #24327ae7;
+}
+
+.resultItem:hover {
+  box-shadow: 0 0 15px #000000e7;
+}
+
+.buttonDiv {
   display: flex;
-  flex-direction: column;
+  margin: 2rem 0rem;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+button.startButton {
+  background-color: rgb(32, 204, 32);
+  padding: 1rem 2rem;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 2rem;
+  border-radius: 10px;
+  color: whitesmoke;
+  border: none;
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button.stopButton {
+  background-color: rgb(194, 28, 28);
+  padding: 1rem 2rem;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 2rem;
+  border-radius: 10px;
+  color: whitesmoke;
+  border: none;
+  cursor: pointer;
 }

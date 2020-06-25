@@ -1,26 +1,105 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Switch, Redirect } from "react-router";
+import "./App.css";
+import AppHeader from "./components/AppHeader";
+import SearchBar from "./components/SearchBar";
+import ResultView from "./components/ResultView";
+import About from "./components/About";
+import axios from "axios";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      chartData: undefined,
+      dbLoaded: false,
+    };
+  }
+
+  submitQuery = async (observation_date, max_results) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/top/confirmed?observation_date=${observation_date}&max_results=${max_results}`
+      );
+      this.setState({ chartData: res.data });
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  startApp = async () => {
+    try {
+      const res = await axios.post(`http://localhost:5000/`);
+      if (res.status !== 200) throw res;
+      this.setState({ dbLoaded: true });
+    } catch (err) {
+      alert("Server encountered an error, please refresh your browser");
+      console.error(err.message);
+    }
+  };
+
+  stopApp = async () => {
+    try {
+      const res = await axios.delete(`http://localhost:5000/stop`);
+      if (res.status !== 205) throw res;
+      this.setState({ dbLoaded: false });
+    } catch (err) {
+      alert("Server encountered an error, please refresh your browser");
+      console.error(err.message);
+    }
+  };
+
+  render() {
+    let resultsDiv = <React.Fragment></React.Fragment>;
+    let searchDiv = (
+      <React.Fragment>
+        <div className="buttonDiv">
+          <button className="stopButton" onClick={this.stopApp}>
+            Stop
+          </button>
+        </div>
+        <SearchBar submitQuery={this.submitQuery} />
+      </React.Fragment>
+    );
+    if (this.state.dbLoaded) {
+      //Covid data loaded to database
+      if (this.state.chartData && this.state.chartData.countries.length !== 0) {
+        resultsDiv = <ResultView chartData={this.state.chartData} />;
+      } else {
+        resultsDiv = <React.Fragment></React.Fragment>;
+      }
+    } else {
+      searchDiv = (
+        <React.Fragment>
+          <div className="buttonDiv">
+            <button className="startButton" onClick={this.startApp}>
+              Start
+            </button>
+          </div>
+        </React.Fragment>
+      );
+    }
+
+    return (
+      <Router>
+        <div className="App">
+          <AppHeader />
+          <Switch>
+            <Route
+              path="/top/confirmed"
+              render={() => (
+                <React.Fragment>
+                  {searchDiv}
+                  {resultsDiv}
+                </React.Fragment>
+              )}
+            />
+            <Route path="/about" component={About} />
+            <Redirect exact from="/" to="/top/confirmed" />
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
 }
-
-export default App;
