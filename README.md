@@ -87,3 +87,8 @@ You will then see the following:
 You may then input the search queries and submit it to get the results.
 
 ![Covid Tracker App Result View](/assets/resultview.png)
+
+## Deployed Version
+
+You may also try the deployed version.
+[Heroku App: Covid Tracker](https://pern-morgan-app.herokuapp.com/)
