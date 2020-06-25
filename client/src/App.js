@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Switch, Redirect } from "react-router";
+import { Switch } from "react-router";
 import "./App.css";
 import AppHeader from "./components/AppHeader";
 import SearchBar from "./components/SearchBar";
@@ -91,7 +91,8 @@ export default class App extends Component {
           <AppHeader />
           <Switch>
             <Route
-              path="/top/confirmed"
+              exact
+              path="/"
               render={() => (
                 <React.Fragment>
                   {searchDiv}
@@ -100,7 +101,6 @@ export default class App extends Component {
               )}
             />
             <Route path="/about" component={About} />
-            <Redirect exact from="/" to="/top/confirmed" />
           </Switch>
         </div>
       </Router>

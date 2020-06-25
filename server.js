@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 if (process.env.NODE_ENV === "production") {
   //Server static content
   //npm run build
-  app.use(express.static(path.join(__dirname + "client/build")));
+  app.use(express.static(path.join(__dirname, "client/build")));
 }
 
 //Routes
@@ -114,7 +114,7 @@ app.get("/top/confirmed", async (req, rsp) => {
           observation_date: req.query.observation_date,
           countries: rows,
         };
-        rsp.json(observation);
+        rsp.status(200).json(observation);
       } else {
         rsp.status(400).send("You may have made the wrong API query");
       }
