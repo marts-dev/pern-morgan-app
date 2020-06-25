@@ -61,3 +61,11 @@ button.stopButton {
   border: none;
   cursor: pointer;
 }
+
+.resultPlaceHolder {
+  display: flex;
+  margin: 2rem 0rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+}

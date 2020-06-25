@@ -64,6 +64,41 @@ app.post("/", async (req, rsp) => {
   }
 });
 
+app.get("/", async (req, rsp) => {
+  if (isFirstRun) {
+    try {
+      isFirstRun = false;
+      const retval = await pool.query(createTableString);
+      fs.createReadStream("covid_19_data.csv")
+        .pipe(csv())
+        .on("data", async (data) => {
+          const values = [
+            data["ObservationDate"],
+            data["Country/Region"],
+            parseInt(data["Confirmed"]),
+            parseInt(data["Deaths"]),
+            parseInt(data["Recovered"]),
+          ];
+          await pool.query(insertString, values);
+        })
+        .on("end", () => rsp.status(200).send("Data successfully saved to DB"));
+    } catch (error) {
+      console.error(error.message);
+      if (error.code === "42P07") {
+        //Table already exists
+        rsp
+          .status(200)
+          .send("Ok, table already existing, client might have refreshed");
+      } else {
+        isFirstRun = true;
+        rsp.status(500).send("SQL query porblem");
+      }
+    }
+  } else {
+    rsp.status(200).send("Ok");
+  }
+});
+
 app.get("/top/confirmed", async (req, rsp) => {
   if (!isFirstRun) {
     try {
@@ -107,6 +142,11 @@ app.delete("/stop", async (req, rsp) => {
   } else {
     rsp.redirect("/");
   }
+});
+
+//Catch all
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/build/index.html"));
 });
 
 app.listen(PORT, () => {

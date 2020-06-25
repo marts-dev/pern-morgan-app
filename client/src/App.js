@@ -20,7 +20,7 @@ export default class App extends Component {
   submitQuery = async (observation_date, max_results) => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/top/confirmed?observation_date=${observation_date}&max_results=${max_results}`
+        `/top/confirmed?observation_date=${observation_date}&max_results=${max_results}`
       );
       this.setState({ chartData: res.data });
     } catch (err) {
@@ -30,7 +30,7 @@ export default class App extends Component {
 
   startApp = async () => {
     try {
-      const res = await axios.post(`http://localhost:5000/`);
+      const res = await axios.post(`/`);
       if (res.status !== 200) throw res;
       this.setState({ dbLoaded: true });
     } catch (err) {
@@ -41,7 +41,7 @@ export default class App extends Component {
 
   stopApp = async () => {
     try {
-      const res = await axios.delete(`http://localhost:5000/stop`);
+      const res = await axios.delete(`/stop`);
       if (res.status !== 205) throw res;
       this.setState({ dbLoaded: false });
     } catch (err) {
@@ -67,7 +67,11 @@ export default class App extends Component {
       if (this.state.chartData && this.state.chartData.countries.length !== 0) {
         resultsDiv = <ResultView chartData={this.state.chartData} />;
       } else {
-        resultsDiv = <React.Fragment></React.Fragment>;
+        resultsDiv = (
+          <React.Fragment>
+            <div className="resultPlaceHolder">No results found</div>
+          </React.Fragment>
+        );
       }
     } else {
       searchDiv = (

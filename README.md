@@ -50,7 +50,7 @@ After accomplishing the requirements above, proceed with the following steps:
 
     2. Execute the following command
 
-       `node server.js`
+       `npm start`
 
     3. If everything is ok, you should see the following output
 
