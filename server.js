@@ -56,7 +56,7 @@ app.post("/", async (req, rsp) => {
           .send("Ok, table already existing, client might have refreshed");
       } else {
         isFirstRun = true;
-        rsp.status(500).send("SQL query porblem");
+        rsp.status(500).send("SQL Create query porblem");
       }
     }
   } else {
@@ -91,7 +91,7 @@ app.get("/", async (req, rsp) => {
           .send("Ok, table already existing, client might have refreshed");
       } else {
         isFirstRun = true;
-        rsp.status(500).send("SQL query porblem");
+        rsp.status(500).send("SQL Create query porblem");
       }
     }
   } else {
@@ -120,7 +120,7 @@ app.get("/top/confirmed", async (req, rsp) => {
       }
     } catch (error) {
       console.error(error.message);
-      rsp.status(500).send("SQL query porblem");
+      rsp.status(500).send("SQL Search query porblem");
     }
   } else {
     rsp.status(500).send("DB not yet ready");
